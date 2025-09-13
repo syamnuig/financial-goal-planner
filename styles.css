@@ -221,3 +221,27 @@ body {
     padding: 0.3rem 0.1rem 0.7rem 0.1rem;
   }
 }
+
+.financial-form-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.financial-form-row label {
+    flex: 0 0 180px; /* Fixed width for labels */
+    text-align: left;
+}
+
+.financial-form-row .input-group {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+}
+
+.financial-form-row input,
+.financial-form-row select {
+    flex: 1;
+    min-width: 0;
+}

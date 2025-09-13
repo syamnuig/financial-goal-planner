@@ -82,6 +82,7 @@ async function getFXData(base, target, months) {
 // Entry point
 renderInputScreen();
 
+
 function renderInputScreen() {
     root.innerHTML = `
         <div class="material-card" id="financial-card">
@@ -91,37 +92,48 @@ function renderInputScreen() {
                 <div class="financial-form-2col">
                     <div class="financial-form-row">
                         <label for="goal">Goal Amount:</label>
-                        <input type="number" id="goal" required placeholder="e.g., 100000" min="0">
-                        <select id="goal-currency">
-                            ${CURRENCIES.map(c => `<option value="${c.code}"${c.code === "EUR" ? " selected" : ""}>${c.code}</option>`).join('')}
-                        </select>
+                        <div class="input-group">
+                            <input type="number" id="goal" required placeholder="e.g., 100000" min="0">
+                            <select id="goal-currency">
+                                ${CURRENCIES.map(c => `<option value="${c.code}"${c.code === "EUR" ? " selected" : ""}>${c.code}</option>`).join('')}
+                            </select>
+                        </div>
                     </div>
                     <div class="financial-form-row">
                         <label for="months">Months:</label>
-                        <input type="number" id="months" required placeholder="e.g., 60" min="1">
+                        <div class="input-group">
+                            <input type="number" id="months" required placeholder="e.g., 60" min="1">
+                        </div>
                     </div>
                     <div class="financial-form-row">
                         <label for="rate">Expected Annual Return (%):</label>
-                        <input type="number" id="rate" required placeholder="e.g., 8" step="0.01">
+                        <div class="input-group">
+                            <input type="number" id="rate" required placeholder="e.g., 8" step="0.01">
+                        </div>
                     </div>
                     <div class="financial-form-row">
                         <label for="budget">Initial Investment:</label>
-                        <input type="number" id="budget" required placeholder="e.g., 10000" min="0">
-                        <select id="input-currency">
-                            ${CURRENCIES.map(c => `<option value="${c.code}"${c.code === "EUR" ? " selected" : ""}>${c.code}</option>`).join('')}
-                        </select>
+                        <div class="input-group">
+                            <input type="number" id="budget" required placeholder="e.g., 10000" min="0">
+                            <select id="input-currency">
+                                ${CURRENCIES.map(c => `<option value="${c.code}"${c.code === "EUR" ? " selected" : ""}>${c.code}</option>`).join('')}
+                            </select>
+                        </div>
                     </div>
                     <div class="financial-form-row">
                         <label for="monthly-currency">Monthly Contribution Currency:</label>
-                        <select id="monthly-currency">
-                            ${CURRENCIES.map(c => `<option value="${c.code}"${c.code === "EUR" ? " selected" : ""}>${c.code}</option>`).join('')}
-                        </select>
+                        <div class="input-group">
+                            <select id="monthly-currency">
+                                ${CURRENCIES.map(c => `<option value="${c.code}"${c.code === "EUR" ? " selected" : ""}>${c.code}</option>`).join('')}
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <button type="submit" class="calc-btn">Calculate Plan</button>
             </form>
         </div>
     `;
+
     root.querySelector("#financial-form").onsubmit = function (e) {
         e.preventDefault();
         const goal = parseFloat(root.querySelector("#goal").value) || 0;
