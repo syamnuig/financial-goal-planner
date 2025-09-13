@@ -222,6 +222,25 @@ async function renderResultScreen({ goal, months, rate, budget, inputCurrency, m
     }
     let finalValueGoal = valuesGoal[valuesGoal.length - 1];
     let totalInvestedMonthly = monthly * n;
+	
+	
+	// Calculate total contribution in goal currency
+	let totalContribution = PV + (monthly * n * avgMonthlyToGoalFX);
+
+	// Interest earned
+	let interestEarned = finalValueGoal - totalContribution;
+
+	// Potential FX gain/loss
+	// Calculate what the final value would be if FX stayed at today's rate
+	let valuesGoalNoFX = [];
+	let cumulativeNoFX = PV;
+	for (let i = 1; i <= n; ++i) {
+		cumulativeNoFX = cumulativeNoFX * (1 + r) + monthly * fxData.monthlyToGoal.current;
+		valuesGoalNoFX.push(cumulativeNoFX);
+	}
+	let finalValueGoalNoFX = valuesGoalNoFX[valuesGoalNoFX.length - 1];
+	let fxGainLoss = finalValueGoal - finalValueGoalNoFX;
+
 
     // Chart
     showChart(valuesMonthly, valuesGoal, monthlyCurrency, goalCurrency);
@@ -241,6 +260,15 @@ async function renderResultScreen({ goal, months, rate, budget, inputCurrency, m
             <span>
                 Projected withdrawal: <b>${currencySymbol(goalCurrency)}${finalValueGoal.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${goalCurrency}</b>
             </span>
+			
+			<hr>
+			<div style="text-align:left; margin-top:1em;">
+				<b>Breakdown:</b><br>
+				Total Contribution: <b>${currencySymbol(goalCurrency)}${totalContribution.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${goalCurrency}</b><br>
+				Interest Earned: <b>${currencySymbol(goalCurrency)}${interestEarned.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${goalCurrency}</b><br>
+				Potential FX Gain/Loss: <b>${currencySymbol(goalCurrency)}${fxGainLoss.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${goalCurrency}</b>
+			</div>
+
             <br>
             <small>(Assumes compounded monthly, FX prediction based on past 6 months)</small>
         </div>
